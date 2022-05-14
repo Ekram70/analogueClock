@@ -6,6 +6,12 @@ const dateElem = document.querySelector(".date");
 const toggleElem = document.querySelector(".toggle");
 const htmlElem = document.querySelector("html");
 
+
+// rotation related variables
+let secondDeg = (new Date().getSeconds()) * 6;
+let minuteDeg = (new Date().getMinutes()) * 6;
+
+
 window.onload = function () {
   if (localStorage.getItem("theme")) {
     if (localStorage.getItem("theme") === "Light Mode") {
@@ -41,13 +47,22 @@ function setTime() {
   const second = time.getSeconds();
 
   hourElem.style.transform = `translate(-50%, -100%) rotate(${hour * 30}deg)`;
-  minuteElem.style.transform = `translate(-50%, -100%) rotate(${minute * 6}deg)`;
-  secondElem.style.transform = `translate(-50%, -100%) rotate(${second * 6}deg)`;
+  minuteElem.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+  secondElem.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
 
   timeElem.innerHTML = `${hour}:${minute < 10 ? `0${minute}` : minute} ${ampm}`;
   dateElem.innerHTML = `${days[day]}, ${months[month]} <span class="circle">${date}</span>`;
+  
+  second == 0 ? minuteDeg += 6: minuteDeg;
+  secondDeg += 6;
 }
 
 setTime();
 
+setTimeout(()=>{
+  minuteElem.style.transition = `transform 0.25s ease-in`;
+  secondElem.style.transition = `transform 0.5s ease-in`;
+})
+
 setInterval(setTime, 1000);
+
